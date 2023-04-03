@@ -1,1 +1,0 @@
-### Rex game for Arduino on 16x2 display
