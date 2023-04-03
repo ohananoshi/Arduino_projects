@@ -4,7 +4,7 @@ Horse Run Header
 Made for Arduino with a 16x2 LCD display.
 
 Author: Guilherme Arruda
-Created: 
+Created: 23/03/23
 
 Last updated:03/04/23
 */
