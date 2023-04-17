@@ -1,68 +1,21 @@
-#include <LiquidCrystal.h>
-#include <math.h>
-
-#define FR 1
-#define FF 2
-#define FT 3
-#define BR 4
-#define BT 5 
-#define BF 6
-
-#define HORSE_FRAMES 19
-#define DELAY 100
-
-uint8_t horse_running_IE[16][8] = {
-{0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00001,0b00000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000},
-
-{0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00001,0b00000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
-
-{0b00000,0b00000,0b00000,0b00111,0b01011,0b01011,0b00001,0b00000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
-{0b00000,0b00000,0b00000,0b00111,0b01011,0b01011,0b00010,0b00010},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
-{0b00000,0b00000,0b00000,0b01111,0b00011,0b00011,0b00100,0b01000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
-{0b00000,0b00000,0b01000,0b00111,0b00011,0b00011,0b00100,0b01000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
-
-{0b00000,0b00000,0b01000,0b00111,0b00011,0b00011,0b00100,0b01000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000},
-
-{0b00000,0b00000,0b00000,0b01111,0b00011,0b00011,0b00010,0b00010},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000}
-};
-
+#include "Horse_run_header.h"
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+line_buffer lcd_buffer[2];
  
+
 void setup()
 {
   lcd.begin(16, 2);
-  lcd.clear();
   
 }
  
 void loop()
-{
-  for(int i = 0, a = 0; i < 16; i++){
-    a = 0;
-    lcd.createChar(a, horse_running_IE[i]);
-    lcd.setCursor(4,1);
-  	lcd.write(a);
-    i++;
-    a++;
-    lcd.createChar(a, horse_running_IE[i]);
-    lcd.setCursor(5,1);
-    lcd.write(a);
-    lcd.setCursor(8,1);
-    lcd.print(i);
-    delay(33);
+{ 
+  for(unsigned short int i = 0; i < 2; i++){
+    for(unsigned short int j = 0; j < 2; j++){
+      buffer_add(&lcd_buffer[u], horse_running_sprite[i][])
+    }
   }
-
-  
 }

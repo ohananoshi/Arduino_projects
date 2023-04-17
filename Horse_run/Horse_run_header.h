@@ -6,37 +6,114 @@ Made for Arduino with a 16x2 LCD display.
 Author: Guilherme Arruda
 Created: 23/03/23
 
-Last updated:03/04/23
+Last updated: 17/04/23
 */
 
+//==================================== HEADERS =====================================================
+
+#include <LiquidCrystal.h>
+#include <stdlib.h>
 
 //========================================== SPRITES ================================================
 
-uint8_t horse_running[16][8] = {
-{0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00001,0b00000},//Lower Left
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000},//Lower Right
-
+uint8_t horse_running_sprite[4][8][8]{
+{/*LL*/
 {0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00001,0b00000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
-
+{0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00001,0b00000},
 {0b00000,0b00000,0b00000,0b00111,0b01011,0b01011,0b00001,0b00000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
 {0b00000,0b00000,0b00000,0b00111,0b01011,0b01011,0b00010,0b00010},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
 {0b00000,0b00000,0b00000,0b01111,0b00011,0b00011,0b00100,0b01000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
-
 {0b00000,0b00000,0b01000,0b00111,0b00011,0b00011,0b00100,0b01000},
-{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
-
 {0b00000,0b00000,0b01000,0b00111,0b00011,0b00011,0b00100,0b01000},
+{0b00000,0b00000,0b00000,0b01111,0b00011,0b00011,0b00010,0b00010}
+},
+{/*LR*/
 {0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000},
-
-{0b00000,0b00000,0b00000,0b01111,0b00011,0b00011,0b00010,0b00010},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00010,0b00001},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000},
 {0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b01000,0b10000}
+},
+{/*UL*/
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000}
+},
+{/*UR*/
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000}
+}
 };
+
+uint8_t horse_jumping_sprite[4][11][8]{
+{/*LL*/
+{0b00000,0b00000,0b00000,0b00111,0b01011,0b00011,0b00010,0b00001},
+{0b00000,0b00000,0b00001,0b00111,0b01011,0b10011,0b00010,0b00001},
+{0b00001,0b00011,0b00011,0b00111,0b01011,0b10011,0b00010,0b00010},
+{0b00011,0b00011,0b00011,0b00111,0b01011,0b10010,0b00010,0b00000},
+{0b00111,0b01011,0b10010,0b00110,0b00000,0b00000,0b00000,0b00000},
+{0b00010,0b00100,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b01111,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b11011,0b00111,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b10000,0b01110,0b00111,0b10111,0b01111,0b00000,0b00000,0b00000},
+{0b00000,0b10000,0b01111,0b00111,0b00111,0b00100,0b01000,0b00000},
+{0b00000,0b10000,0b01000,0b00111,0b00011,0b00011,0b00010,0b00010}
+},
+{/*LR*/
+{0b01111,0b01011,0b11111,0b11100,0b11100,0b10100,0b01000,0b00000},
+{0b01111,0b11100,0b11100,0b11100,0b10100,0b00100,0b01000,0b00000},
+{0b11000,0b11000,0b11100,0b10100,0b00100,0b00000,0b00000,0b00000},
+{0b11000,0b11100,0b10100,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b10100,0b01000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00100,0b01000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b11100,0b00100,0b00010,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b11111,0b11000,0b11000,0b00100,0b00010,0b00000,0b00000,0b00000},
+{0b01000,0b01111,0b11011,0b11111,0b11100,0b11100,0b00010,0b00001},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100},
+{0b01000,0b01111,0b01011,0b11111,0b11100,0b11100,0b00100,0b00100}
+},
+{/*UL*/
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00001},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00001,0b00011},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00111,0b01011,0b10011},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b01000,0b00111,0b00011},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b10000,0b01000,0b00111},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000}
+},
+{/*UR*/
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b01000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b01000,0b01111},
+{0b00000,0b00000,0b00000,0b00000,0b10000,0b11110,0b10110,0b11110},
+{0b00000,0b00000,0b10000,0b11110,0b10110,0b11110,0b11110,0b11000},
+{0b00000,0b01000,0b01111,0b01011,0b01111,0b11100,0b11100,0b11100},
+{0b00000,0b01000,0b01111,0b01011,0b01111,0b11100,0b11100,0b11100},
+{0b00000,0b00000,0b00000,0b00000,0b00100,0b01111,0b11011,0b11111},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b01000,0b01111},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000},
+{0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000,0b00000}
+}
+};
+
 
 uint8_t cacts[3][8] = {
 {0b00000,0b00000,0b00100,0b10100,0b10101,0b11101,0b00111,0b00100},
@@ -48,73 +125,81 @@ uint8_t piter[2][8] = {
 {0b00000,0b00000,0b00000,0b10000,0b01110,0b11111,0b00000,0b00000},
 {0b00000,0b00000,0b00000,0b00000,0b01100,0b01011,0b11111,0b00110}
 };
+
 //=====================================================================================================
 
-unsigned short int colum_operator[5] = {16,24,28,30,31};
+#define LCD_BLOCKS_COUNT 16
+#define LCD_LINES_COUNT 2
+#define LCD_BLOCK_HEIGHT 8
+
+unsigned short int obstacle_distances[2] = {4,8};
+
+unsigned short int obstacle_distance_count;
+
+unsigned short int velocity = 1;//colums per second
 
 typedef struct{
-    uint8_t vector[8];
+    uint8_t vector[LCD_BLOCK_HEIGHT];
     unsigned short int line;
-    unsigned short int start_colum;
-    unsigned short int end_colum;
     unsigned short int block;
 }sprite;
 
-sprite sprite_merge(sprite sprite_1, sprite sprite_2){
-    sprite merged_sprite;
+typedef struct{
+    uint8_t sprite_vectors[LCD_BLOCKS_COUNT][LCD_BLOCK_HEIGHT];
+}line_buffer;
 
-    for(int i = 0; i < 8; i++){
-        merged_sprite.vector[i] = sprite_1.vector[i] | sprite_2.vector[i];
-    }
-    return merged_sprite;
+unsigned short int choose_obstacle(uint8_t** obstacle_vector, unsigned short int* distance_counter, unsigned short int* distances){
+    srand(millis());
+    distance_counter = (rand() % (sizeof(distances)/sizeof(distances[0])));
+    
+    return (rand() % (sizeof(obstacle_vector)/sizeof(obstacle_vector[0])));
 }
 
+void buffer_add(line_buffer* buffer, uint8_t* sprite_vector, unsigned short int block){
+    for(unsigned short int i = 0; i < LCD_BLOCK_HEIGHT; i++){
+        buffer->sprite_vectors[block][i] = sprite_vector[i];
+    }
+}
 
-sprite** sprite_split(sprite* line_buffer){
-    sprite* new_buffer = (sprite*)calloc(16,sizeof(sprite));
-    unsigned short int block_ref[2], op_selector[2];
+void sprite_merge(uint8_t* buffer_sprite_vector, uint8_t* splited_sprite_vector){
 
-    for(int i = 0; i < 16; i++){
-        new_buffer[i] = (sprite*)realloc(new_buffer[i], 2*sizeof(sprite*));
+    for(unsigned short int i = 0; i < LCD_BLOCK_HEIGHT; i++){
+        buffer_sprite_vector[i] = (buffer_sprite_vector[i] << velocity) | splited_sprite_vector[i];
+    }
+}
 
-        block_ref[0] = line_buffer[i]->start_colum/5;
-        block_ref[1] = line_buffer[i]->end_colum/5;
+sprite* sprite_split(line_buffer* buffer, unsigned short int line){
+    sprite* sprite_buff = (sprite*)calloc(LCD_BLOCKS_COUNT,sizeof(sprite));
 
-        if(block_ref[0] == block_ref[1]) continue;
-        if(line_buffer[i]->line == 3) continue;
+    for(unsigned short int i = 0; i < LCD_BLOCKS_COUNT; i++){
 
-        op_selector[0] = 5*(start_block_num + 1) - line_buffer[i]->start_colum;
-        op_selector[1] = 5*(end_block_num + 1) - line_buffer[i]->end_colum;
+        if((i == 7) || (i == 8)) continue;
 
-        for(int j = 0; j < 2; j++){
-            for(int k = 0; k < 8; k++){
-                new_buffer[i][j]->vector[k] = line_buffer[i]->vector[k] & colum_operator[op_selector[j]];
-                new_buffer[i][j]->block = block_ref[j];
-            }
+        sprite_buff->block = i;
+        sprite_buff->line = line;
+        
+        for(unsigned short int j = 0; j < LCD_BLOCK_HEIGHT; j++){
+            sprite_buff->vector[j] = buffer->sprite_vectors[i][j] >> velocity;
         }
     }
 
-    return new_buffer;
+    return sprite_buff;
 }
 
-sprite* line_buffer_update(sprite** splited_buffer){
-    sprite* updated_buffer = (sprite*)calloc(15, sizeof(sprite));
+void buffer_update(line_buffer* buffer, sprite* sprite_buffer){
 
-    for(int i = 0; i < 15; i++){
-        updated_buffer[i]->vector = sprite_merge(splited_buffer[i][1], splited_buffer[i+1][0]);
+    for(unsigned short int i = 0; i < LCD_BLOCKS_COUNT; i++){
+        sprite_merge(buffer->sprite_vectors[i], sprite_buffer[i].vector);
     }
-
-
-    return updated_buffer;
 }
 
-void refresh(unsigned short int line, sprite* line_buffer){
+void buffer_print(line_buffer* buffer, LiquidCrystal obj, unsigned short int line){
     int a;
-    lcd.setCursor(0,line);
+    obj.setCursor(0,line);
 
-    for(int i = 0; i < 15; i++){
+    for(int i = 0; i <LCD_BLOCKS_COUNT; i++){
         a = 0;
-        lcd.createChar(a, line_buffer[i]->vector);
-        lcd.write(a);
+        obj.createChar(a, (uint8_t*) (buffer -> sprite_vectors[i]));
+        obj.write(a);
     }
 }
